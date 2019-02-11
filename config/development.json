@@ -1,0 +1,13 @@
+{
+  "database": {
+    "hostname": "db",
+    "username": "root",
+    "password": "oJuwu7Tohquaongoh9Nooz9vaThaeche",
+    "port": 27017,
+    "db": "user",
+    "authSource": "admin"
+  },
+  "crypto": {
+    "seed": "eecae9Gu"
+  }
+}
