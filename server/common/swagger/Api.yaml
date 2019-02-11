@@ -1,0 +1,72 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: auth
+  description: SmartSleep authentication service
+basePath: /auth
+tags:
+  - name: Auth
+    description: Authentication endpoints
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+
+definitions:
+  AuthBody:
+    type: object
+    required:
+      - email
+      - password
+      - clientId
+      - clientSecret
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      clientId:
+        type: string
+      clientSecret:
+        type: string
+
+paths:
+  /login:
+    description: Authenticate user and client
+    post:
+      parameters:
+        - name: email
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: password
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: clientId
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: clientSecret
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+  /validate:
+    get:
+      description: Validate requests
+
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
