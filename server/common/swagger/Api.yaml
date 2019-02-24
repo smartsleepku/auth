@@ -34,6 +34,14 @@ definitions:
       clientSecret:
         type: string
 
+parameters:
+  code:
+    name: code
+    in: path
+    description: Attendee code
+    required: true
+    type: string
+
 paths:
   /login:
     description: Authenticate user and client
@@ -62,7 +70,17 @@ paths:
   /validate:
     get:
       description: Validate requests
-
+  /attendee/{code}:
+    parameters:
+      - $ref: "#/parameters/code"
+    get:
+      description: Validate attendees
+      parameters:
+        - name: code
+          in: path
+          description: Attendee code
+          required: true
+          type: string
   /spec:
     get:
       tags:

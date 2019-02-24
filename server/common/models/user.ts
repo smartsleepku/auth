@@ -4,6 +4,7 @@ export interface IUser extends mongoose.Document {
   _id: string;
   emailAddress: string;
   password: string;
+  attendeeCode: string;
   cpr?: string;
   address?: {
     street?: string;
@@ -17,6 +18,7 @@ export interface IUser extends mongoose.Document {
 export const User: mongoose.Model<IUser> = mongoose.model<IUser>('User', new mongoose.Schema({
   emailAddress: String,
   password: String,
+  attendeeCode: String,
   cpr: String,
   address: {
     street: String,

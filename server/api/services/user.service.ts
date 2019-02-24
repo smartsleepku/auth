@@ -27,7 +27,18 @@ export class UserService {
     return (await User.findOne({
       emailAddress: emailAddress,
       password: hash,
-    }))
+    }));
+  }
+
+  public async validAttendeeCode(code: string): Promise<boolean> {
+    return (await User.findOne({ attendeeCode: code })) != null;
+  }
+
+  public async updateUser(emailAddress: string, password: string): Promise<void> {
+    await User.findOneAndUpdate(
+      { emailAddress: emailAddress },
+      { password: password },
+    );
   }
 
   public async logout(email: string): Promise<void> {
