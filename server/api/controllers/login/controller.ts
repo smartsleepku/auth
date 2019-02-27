@@ -17,7 +17,7 @@ export class Controller {
       const session = await UserService.upsertSession(user._id);
       res.status(200)
         .send({
-          jwt: JwtService.encode(session.userId, session._id),
+          jwt: JwtService.encodeUser(session.userId, session._id),
         }
       );
     } catch (error) {

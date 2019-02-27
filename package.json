@@ -4,6 +4,7 @@
   "description": "SmartSleep authentication service",
   "main": "index.js",
   "scripts": {
+    "authorize": "CONFIG_ENV=development APP_ID=auth LOG_LEVEL=info npx ts-node bin/auth-client.ts",
     "start": "node dist/index.js",
     "compile": "ts-node build.ts && tsc",
     "dev": "nodemon server/index.ts | pino-pretty",
@@ -18,6 +19,7 @@
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "jwt-simple": "^0.5.5",
+    "minimist": "^1.2.0",
     "mongoose": "^5.4.9",
     "morgan": "^1.9.1",
     "ordered-config": "^0.2.0",

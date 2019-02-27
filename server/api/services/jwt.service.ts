@@ -2,15 +2,24 @@ import * as jwt from 'jwt-simple';
 import * as config from 'ordered-config';
 
 export interface JwtToken {
-  userId: string;
-  session: string;
+  userId?: string;
+  session?: string;
+  clientId?: string;
+  clientSecret?: string;
 }
 
 export class JwtService {
-  public encode(userId: string, sessionId: string): string {
+  public encodeUser(userId: string, sessionId: string): string {
     return jwt.encode({
       userId: userId,
       session: sessionId,
+    }, config.auth.jwtSecret);
+  }
+
+  public encodeAuthorizedClient(clientId: string, clientSecret: string): string {
+    return jwt.encode({
+      clientId: clientId,
+      clientSecret: clientSecret,
     }, config.auth.jwtSecret);
   }
 

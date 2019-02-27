@@ -1,4 +1,5 @@
 import UserService from '../../services/user.service';
+import ClientService from '../../services/client.service';
 import JwtService from '../../services/jwt.service';
 import { Request, Response } from 'express';
 import L from '../../../common/logger';
@@ -11,7 +12,8 @@ export class Controller {
       const borne = header.split(/ /)[1];
       const token = JwtService.decode(borne);
       L.debug('token: ' + JSON.stringify(token, null, 2));
-      if ((await UserService.validSession(token.userId)) == true) {
+      if ((await UserService.validSession(token.userId)) == true ||
+          (await ClientService.authorizedClient(token)) == true) {
         L.debug('ok');
         res.status(200).send({});
       } else {
