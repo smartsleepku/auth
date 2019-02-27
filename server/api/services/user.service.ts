@@ -34,10 +34,13 @@ export class UserService {
     return (await User.findOne({ attendeeCode: code })) != null;
   }
 
-  public async updateUser(emailAddress: string, password: string): Promise<void> {
+  public async updateUser(emailAddress: string, password: string, code: string): Promise<void> {
     await User.findOneAndUpdate(
-      { emailAddress: emailAddress },
-      { password: password },
+      { attendeeCode: code },
+      {
+        emailAddress: emailAddress,
+        password: password,
+      },
     );
   }
 
