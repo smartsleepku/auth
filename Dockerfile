@@ -6,4 +6,4 @@ COPY ./ ./
 RUN npm install
 RUN npm run compile
 
-CMD node /auth/dist/index.js
+CMD node /auth/dist/server/index.js
