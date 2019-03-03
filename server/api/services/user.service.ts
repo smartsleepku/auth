@@ -35,11 +35,12 @@ export class UserService {
   }
 
   public async updateUser(emailAddress: string, password: string, code: string): Promise<void> {
+    var hash = crypto.createHash('sha256').update(password + config.crypto.seed).digest('hex');
     await User.findOneAndUpdate(
       { attendeeCode: code },
       {
         emailAddress: emailAddress,
-        password: password,
+        password: hash,
       },
     );
   }

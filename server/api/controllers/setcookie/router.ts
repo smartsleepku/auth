@@ -1,5 +1,4 @@
 import express from 'express';
 import controller from './controller';
 export default express.Router()
-    .get('/:code', controller.query)
-    .post('/', controller.update);
+    .get('/', controller.setcookie);

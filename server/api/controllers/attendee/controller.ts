@@ -1,5 +1,6 @@
 import ClientService from '../../services/client.service';
 import UserService from '../../services/user.service';
+import { Controller as LoginController } from '../../controllers/login/controller';
 import { Request, Response } from 'express';
 import { AuthLoginBody } from '../../../common/models/login';
 import L from '../../../common/logger';
@@ -24,16 +25,15 @@ export class Controller {
   }
 
   async update(req: Request, res: Response): Promise<void> {
-    L.info('POST /auth/attendee/:code - in /server/api/controllers/attendee/controller::update');
+    L.info('POST /auth/attendee - in /server/api/controllers/attendee/controller::update');
     const form = req.body as AuthLoginBody;
-    const code = req.params.code;
     try {
       const client = await ClientService.validClient(form);
       if (client == null) { res.status(403).send({ error: 'invalid client' }) ; return }
-      const valid = await UserService.validAttendeeCode(code);
+      const valid = await UserService.validAttendeeCode(form.attendeeCode);
       if (!valid) { res.status(403).send({ error: 'invalid code' }) ; return }
-      await UserService.updateUser(form.email, form.password, code);
-      res.redirect('/auth/login');
+      await UserService.updateUser(form.email, form.password, form.attendeeCode);
+      await new LoginController().login(req, res);
     } catch (error) {
       L.error(error);
       res.status(500).send({

@@ -25,7 +25,7 @@ definitions:
       - clientId
       - clientSecret
     properties:
-      username:
+      email:
         type: string
       password:
         type: string
@@ -33,12 +33,20 @@ definitions:
         type: string
       clientSecret:
         type: string
+      attendeeCode:
+        type: string
 
 parameters:
   code:
     name: code
     in: path
     description: Attendee code
+    required: true
+    type: string
+  jwt:
+    name: jwt
+    in: query
+    description: JWT
     required: true
     type: string
 
@@ -70,6 +78,44 @@ paths:
   /validate:
     get:
       description: Validate requests
+  /setcookie:
+    get:
+      description: Set cookie with JWT
+      parameters:
+        - name: jwt
+          in: path
+          description: JWT to be set
+          required: true
+          type: string
+  /attendee:
+    post:
+      description: Update attendee
+      parameters:
+        - name: email
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: password
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: clientId
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: clientSecret
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
+        - name: attendeeCode
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AuthBody"
   /attendee/{code}:
     parameters:
       - $ref: "#/parameters/code"

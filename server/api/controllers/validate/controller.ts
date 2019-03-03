@@ -7,8 +7,10 @@ import L from '../../../common/logger';
 export class Controller {
   async validate(req: Request, res: Response): Promise<void> {
     L.debug('auth header: ' + req.headers.authorization);
+    L.debug('auth cookie: ' + req.cookies.auth);
     try {
-      const header = req.headers.authorization;
+      let header = req.headers.authorization;
+      if (header == null) { header = "Cookie " + req.cookies.auth; }
       const borne = header.split(/ /)[1];
       const token = JwtService.decode(borne);
       L.debug('token: ' + JSON.stringify(token, null, 2));

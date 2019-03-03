@@ -3,4 +3,5 @@ export interface AuthLoginBody {
     password?: string;
     clientId: string;
     clientSecret: string;
+    attendeeCode?: string;
 };
