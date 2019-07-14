@@ -2,6 +2,21 @@ import { ISession, Session } from '../../common/models/session';
 import { IUser, User } from '../../common/models/user';
 import * as config from 'ordered-config';
 import crypto from 'crypto';
+import L from '../../common/logger';
+
+function trimLeft(a: String, charlist: String) {
+  if (charlist === undefined)
+    charlist = "\s";
+
+  return a.replace(new RegExp("^[" + charlist + "]+"), "");
+};
+
+function trimRight(a: String, charlist: String) {
+  if (charlist === undefined)
+    charlist = "\s";
+
+  return a.replace(new RegExp("[" + charlist + "]+$"), "");
+};
 
 export class UserService {
   public async upsertSession(userId: string): Promise<ISession> {
@@ -23,7 +38,7 @@ export class UserService {
 
   public async validUser(emailAddress: string, password: string): Promise<IUser | null> {
     var hash = crypto.createHash('sha256').update(password + config.crypto.seed).digest('hex');
-    console.log('password: ' + password + ', seed: ' + config.crypto.seed + ', hash: ' + hash);
+    L.debug('password: ' + password + ', seed: ' + config.crypto.seed + ', hash: ' + hash);
     return (await User.findOne({
       emailAddress: emailAddress,
       password: hash,
@@ -31,7 +46,9 @@ export class UserService {
   }
 
   public async validAttendeeCode(code: string): Promise<boolean> {
-    return (await User.findOne({ attendeeCode: code })) != null;
+    L.debug('validAttendeeCode: ' + code);
+    let trimmed = trimLeft(trimRight(code, ' '), ' ');
+    return (await User.find( { $or:[ { attendeeCode: trimmed}, {attendeeCode: ' ' + trimmed + ' '}]})) != null;
   }
 
   public async updateUser(emailAddress: string, password: string, code: string): Promise<void> {
