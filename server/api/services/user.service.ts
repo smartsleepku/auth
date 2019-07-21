@@ -46,15 +46,25 @@ export class UserService {
   }
 
   public async validAttendeeCode(code: string): Promise<boolean> {
-    L.debug('validAttendeeCode: ' + code);
+    L.debug('validAttendeeCode: [' + code + ']');
     let trimmed = trimLeft(trimRight(code, ' '), ' ');
-    return (await User.find( { $or:[ { attendeeCode: trimmed}, {attendeeCode: ' ' + trimmed + ' '}]})) != null;
+    let user = await User.findOne({ attendeeCode: ' ' + trimmed + ' '});
+    if (user == null) { user = await User.findOne({ attendeeCode: trimmed}); }
+    return user != null;
   }
 
   public async updateUser(emailAddress: string, password: string, code: string): Promise<void> {
     var hash = crypto.createHash('sha256').update(password + config.crypto.seed).digest('hex');
+    let trimmed = trimLeft(trimRight(code, ' '), ' ');
     await User.findOneAndUpdate(
-      { attendeeCode: code },
+      { attendeeCode: trimmed },
+      {
+        emailAddress: emailAddress,
+        password: hash,
+      },
+    );
+    await User.findOneAndUpdate(
+      { attendeeCode: ' ' + trimmed + ' ' },
       {
         emailAddress: emailAddress,
         password: hash,
