@@ -1,0 +1,13 @@
+{
+  "database": {
+    "hostname": "<INSERT HOSTNAME HERE>",
+    "username": "<INSERT USERNAME HERE>",
+    "password": "<INSERT PASSWORD HERE>",
+    "port": 27017,
+    "db": "smartsleep",
+    "authSource": "admin"
+  },
+  "crypto": {
+    "seed": "<INSERT SEED HERE>"
+  }
+}
